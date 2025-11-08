@@ -1,5 +1,4 @@
 
-
 let bg;                //存放背景颜色
 let colorSet;          //存放所有颜色
 let rings = [];       // 保存每个圆的随机参数（位置/半径/配色）
@@ -36,12 +35,12 @@ function draw() {
 function generateLayout(){
   rings = [];
   let attempts = 0; // 建立一个计数器，防止无限循环
-  let target = 10;  // 在页面中画10个圆
+  let target = 12;  // 在页面中画10个圆
   while (rings.length < target && attempts < 2000){
     attempts++;
 
     // 控制半径范围
-    let Rmin = min(width,height) * 0.05;   
+    let Rmin = min(width,height) * 0.04;   
     let Rmax = min(width,height) * 0.12;   
     let r = random(Rmin, Rmax);
 
@@ -49,13 +48,14 @@ function generateLayout(){
     let x = random(r + 20, width  - r - 20);
     let y = random(r + 20, height - r - 20);
 
-    // 为这个圆选 5 个配色
+    // 为这个圆选 5 个配色，除去背景色
+    let pool = colorSet.slice(1);
     let palette = [
-      random(colorSet),   // 外环颜色
-      random(colorSet),   // 辐条颜色
-      random(colorSet),   // 中环颜色
-      random(colorSet),   // 点阵颜色
-      random(colorSet)    // 中心帽颜色
+      random(pool),   // 外环颜色
+      random(pool),   // 辐条颜色
+      random(pool),   // 中环颜色
+      random(pool),   // 点阵颜色
+      random(pool)    // 中心帽颜色
     ];
 
     // 把这个圆的数据存进数组
@@ -64,15 +64,15 @@ function generateLayout(){
 }
 
 // ===== 绘制圆（外环/辐条/中环/点阵/中心帽） =====
-function drawOne(ring){
+function drawCircle(ring){
   // 外粗环
-  strokeWeight(max(2, ring.r * 0.06));
+  strokeWeight(max(2, ring.r * 0.08));
   stroke(ring.palette[0]);
   noFill();
   circle(ring.x, ring.y, ring.r * 2);
 
   // 放射线条
-  let nSpokes = 20;  //线条数量
+  let nSpokes = 15;  //线条数量
   strokeWeight(2);
   stroke(ring.palette[1]);
 
@@ -91,6 +91,7 @@ function drawOne(ring){
   noFill();
   circle(ring.x, ring.y, ring.r * 1.2);
 
+
   // 点阵圈
   noStroke();
   fill(ring.palette[3]);
@@ -106,6 +107,6 @@ function drawOne(ring){
   noStroke();
   fill(ring.palette[4]);
   circle(ring.x, ring.y, ring.r * 0.24);
-  fill(bg);
+  fill(random(colorSet));
   circle(ring.x, ring.y, ring.r * 0.12);
 }
