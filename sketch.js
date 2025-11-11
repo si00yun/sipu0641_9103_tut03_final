@@ -32,19 +32,19 @@ function draw() {
     } else {
       drawCircle(ring);       // 辐条圆
     }
-    fallandReset(ring);      //调用下落函数
+    fallAndReset(ring);      //调用下落函数
   }
 }
 
-function fallandReset(ring){
+function fallAndReset(ring){
   ring.y += ring.vy;  //通过速度更新位置
 
-  if (ring.vy - ring.r > height){ //当圆超出画布
-    ring.y =- ring.r;  //更新位置，从上方重新出现
+  if (ring.y > height + ring.r){ //当圆超出画布
+    ring.y =- ring.r;  //让小球不断下落
     ring.x = random(ring.r, width-ring.r); //随机x位置
     ring.vy = random(1,3);  //新的下落速度
     //随机颜色
-    ring.platte = [
+    ring.palette = [
       random(colorSet.slice(1)),
       random(colorSet.slice(1)),
       random(colorSet.slice(1)),
