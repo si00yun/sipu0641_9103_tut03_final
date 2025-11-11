@@ -32,34 +32,28 @@ function draw() {
     } else {
       drawCircle(ring);       // 辐条圆
     }
-
-    moveAndBounce(ring);   // 更新位置 + 边缘反弹
+    fallandReset(ring);      //调用下落函数
   }
 }
 
-// 移动 + 边缘反弹
-function moveAndBounce(ring){
-  ring.x += ring.vx;
-  ring.y += ring.vy;
+function fallandReset(ring){
+  ring.y += ring.vy;  //通过速度更新位置
 
-  // 左右边界
-  if (ring.x < ring.r) {
-    ring.x = ring.r;
-    ring.vx *= -1;
-  } else if (ring.x > width - ring.r) {
-    ring.x = width - ring.r;
-    ring.vx *= -1;
-  }
-
-  // 上下边界
-  if (ring.y < ring.r) {
-    ring.y = ring.r;
-    ring.vy *= -1;
-  } else if (ring.y > height - ring.r) {
-    ring.y = height - ring.r;
-    ring.vy *= -1;
+  if (ring.vy - ring.r > height){ //当圆超出画布
+    ring.y =- ring.r;  //更新位置，从上方重新出现
+    ring.x = random(ring.r, width-ring.r); //随机x位置
+    ring.vy = random(1,3);  //新的下落速度
+    //随机颜色
+    ring.platte = [
+      random(colorSet.slice(1)),
+      random(colorSet.slice(1)),
+      random(colorSet.slice(1)),
+      random(colorSet.slice(1)),
+      random(colorSet.slice(1)),
+    ];
   }
 }
+
 
 // ===== 生成圆的数据（位置/半径/配色） =====
 function generateLayout(){
@@ -82,8 +76,8 @@ function generateLayout(){
   for (let i = 0; i < N_SPOKES; i++){
     let r = random(Rmin_spokes, Rmax_spokes);
     let x = random(r + 20, width  - r - 20);
-    let y = random(r + 20, height - r - 20);
-
+    let y = random(- height, height);
+    let vy = random(3.2, 4.2); //下落速度
     let palette = [
       random(pool),
       random(pool),
@@ -91,18 +85,7 @@ function generateLayout(){
       random(pool),
       random(pool)
     ];
-
-    // 设置spokes的速度和方向
-    let Vmin = S * 0.002;     // 最慢速度
-    let Vmax = S * 0.010;     // 最快速度
-    let baseK = S * 0.3;      // 速度基准
-    let speed = baseK / r;    // 半径越大速度越慢
-    speed = constrain(speed, Vmin, Vmax);
-    let ang = random(TWO_PI); // 随机方向
-    let vx = cos(ang) * speed;
-    let vy = sin(ang) * speed;
-
-    rings.push({ x, y, r, palette, style: 'spokes', vx, vy });
+     rings.push({ x, y, r, palette, style: 'spokes', vy });
   }
 
   // 第二类：dots
@@ -110,7 +93,7 @@ function generateLayout(){
     let r = random(Rmin_dots, Rmax_dots);
     let x = random(r + 20, width  - r - 20);
     let y = random(r + 20, height - r - 20);
-
+    let vy = random(1.7, 3.2);
     let palette = [
       random(pool),
       random(pool),
@@ -118,18 +101,7 @@ function generateLayout(){
       random(pool),
       random(pool)
     ];
-
- // set these dots speed和方向
-    let Vmin = S * 0.002;
-    let Vmax = S * 0.010;
-    let baseK = S * 0.7;
-    let speed = baseK / r;
-    speed = constrain(speed, Vmin, Vmax);
-    let ang = random(TWO_PI);
-    let vx = cos(ang) * speed;
-    let vy = sin(ang) * speed;
-
-    rings.push({ x, y, r, palette, style: 'dots', vx, vy });
+    rings.push({ x, y, r, palette, style: 'dots', vy });
   }
 }
 
