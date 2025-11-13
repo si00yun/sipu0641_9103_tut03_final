@@ -32,17 +32,17 @@ function draw() {
     } else {
       drawCircle(ring);       // 辐条圆
     }
-    fallAndReset(ring);      //调用下落函数
+    fallAndReset(ring);      //Call the fallen function
   }
 }
 
 function fallAndReset(ring){
-  ring.y += ring.vy;  //通过速度更新位置
+  ring.y += ring.vy;  //Update the location by speed
 
-  if (ring.y > height + ring.r){ //当圆超出画布
-    ring.y =- ring.r;  //让小球不断下落
-    ring.x = random(ring.r, width-ring.r); //随机x位置
-    ring.vy = random(1,3);  //新的下落速度
+  if (ring.y > height + ring.r){ //If circles fall out of the canvas
+    ring.y =- ring.r;  //Let circles keep falling
+    ring.x = random(ring.r, width-ring.r); //Random X position
+    ring.vy = random(1,3);  //New fallen speed
     //随机颜色
     ring.palette = [
       random(colorSet.slice(1)),
@@ -77,7 +77,7 @@ function generateLayout(){
     let r = random(Rmin_spokes, Rmax_spokes);
     let x = random(r + 20, width  - r - 20);
     let y = random(- height, height);
-    let vy = random(3.2, 4.2); //下落速度
+    let vy = random(3.2, 4.2); //Fallen velocity
     let palette = [
       random(pool),
       random(pool),
